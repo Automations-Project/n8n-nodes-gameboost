@@ -1,0 +1,20 @@
+{
+	"node": "n8n-nodes-base.Gameboost",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": [
+		"Miscellaneous"
+	],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://docs.gameboost.com/api-reference/accounts/get-all-accounts"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": ""
+			}
+		]
+	}
+}
