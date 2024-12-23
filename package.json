@@ -1,19 +1,19 @@
 {
   "name": "@nskha/n8n-nodes-gameboost",
-  
-  "version": "0.1.0",
+
+  "version": "0.2.0",
   "author": {
-    "name": "Rami Alcune"
+    "name": "Nskha"
   },
   "description": "![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/RamiAlcune/n8n-nodes-gameboost#readme",
+  "homepage": "https://github.com/Automations-Project/n8n-nodes-gameboost",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RamiAlcune/n8n-nodes-gameboost.git"
+    "url": "git+https://github.com/Automations-Project/n8n-nodes-gameboost.git"
   },
   "main": "index.js",
   "scripts": {
@@ -491,6 +491,6 @@
     "yocto-queue": "^0.1.0"
   },
   "bugs": {
-    "url": "https://github.com/RamiAlcune/n8n-nodes-gameboost/issues"
+    "url": "https://github.com/Automations-Project"
   }
 }
