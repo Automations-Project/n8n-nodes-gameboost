@@ -8,7 +8,7 @@
 	"resources": {
 		"credentialDocumentation": [
 			{
-				"url": "https://docs.gameboost.com/api-reference/accounts/get-all-accounts"
+				"url": "https://docs.gameboost.com/api-reference/accounts"
 			}
 		],
 		"primaryDocumentation": [

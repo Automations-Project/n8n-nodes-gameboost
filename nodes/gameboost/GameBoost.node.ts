@@ -52,6 +52,7 @@ export class GameBoost implements INodeType {
                 name: 'operation',
                 type: 'options',
                 default: 'getAllAccounts',
+                noDataExpression: true,
                 options: [
                     {
                         name: 'Get All Accounts',
@@ -172,7 +173,7 @@ export class GameBoost implements INodeType {
                     {
                         name: 'Delete Account',
                         value: 'deleteAccount',
-                        description: 'Permanently remove an account using its unique ID. Use this option if the account is no longer needed',
+                        description: 'Permanently remove an account using its unique ID. Use this option if the account is no longer needed.',
                         action: 'Delete an account',
                         routing: {
                             request: {
@@ -241,7 +242,7 @@ export class GameBoost implements INodeType {
                     },
                 },
                 default: '',
-                description: 'The Game name on the platform. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+                description: 'The Game name on the platform, Choose from the list',
             },
             {
                 displayName: 'Account Data Field',
@@ -314,15 +315,15 @@ export class GameBoost implements INodeType {
                 displayName: 'Status',
                 name: 'accountStatus',
                 type: 'options',
-                default: 'All',
+                default: '',
                 options: [
                     { name: 'All', value: '' },
-                    { name: 'Listed', value: 'Listed' },
                     { name: 'Draft', value: 'Draft' },
+                    { name: 'Listed', value: 'Listed' },
                     { name: 'Pending', value: 'Pending' },
                     { name: 'Processing', value: 'Processing' },
-                    { name: 'Sold', value: 'Sold' },
                     { name: 'Refunded', value: 'Refunded' },
+                    { name: 'Sold', value: 'Sold' }
                     
                 ],
                 

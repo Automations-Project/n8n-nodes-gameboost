@@ -1,10 +1,8 @@
 # n8n-nodes-gameboost
 
-![Banner image](https://i.imgur.com/ZObxN1p.png)
+![Banner image](https://i.imgur.com/U0zB9Ea.png)
 
 This is a custom n8n node created by **Nskha** that enables seamless integration with **GameBoost**. It allows sellers to manage their accounts through automated workflows without any programming knowledge.
-
-## Table of Contents
 
 ## Features
 
@@ -13,7 +11,6 @@ This is a custom n8n node created by **Nskha** that enables seamless integration
   - List all accounts
   - Create new accounts
   - Delete existing accounts
-  - Update account details
 - **Secure Authentication**: Built-in credential management for secure API access
 - **Error Handling**: Robust error handling and detailed feedback
 - **Documentation**: Comprehensive documentation and examples included
