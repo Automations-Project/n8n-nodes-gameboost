@@ -49,7 +49,6 @@ export async function getGameSlugs(this: ILoadOptionsFunctions): Promise<INodePr
 export async function getAllAccountsID(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
     const credentials = await this.getCredentials('gameboostApi');
     
-    // Get the API token similar to getAccountDataFields
     let apiToken = '';
     if (credentials && typeof credentials === 'object') {
         if ('apiToken' in credentials) {
@@ -94,7 +93,6 @@ export async function getAllAccountsID(this: ILoadOptionsFunctions): Promise<INo
 export async function getAccountDataFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
     try {
         const credentials = await this.getCredentials('gameboostApi');
-        console.log('DEBUG: (getAccountDataFields) Credentials loaded successfully');
 
         let apiToken = '';
         if (credentials && typeof credentials === 'object') {
@@ -110,15 +108,10 @@ export async function getAccountDataFields(this: ILoadOptionsFunctions): Promise
         }
 
         const gameslug = this.getNodeParameter('gameslug', '') as string;
-        console.log('DEBUG: (getAccountDataFields) gameslug parameter:', gameslug);
 
-        if (!gameslug) {
-            console.log('DEBUG: (getAccountDataFields) No gameslug selected, cannot load account data fields.');
-            return [];
-        }
+        if (!gameslug) return [];
 
         const url = `https://api.gameboost.com/v1/accounts/template/${encodeURIComponent(gameslug)}`;
-        console.log('DEBUG: (getAccountDataFields) Requesting template data from:', url);
 
         const response = await this.helpers.request({
             method: 'GET',
@@ -129,14 +122,9 @@ export async function getAccountDataFields(this: ILoadOptionsFunctions): Promise
             json: true,
         });
 
-        console.log('DEBUG: (getAccountDataFields) Response from template endpoint:', JSON.stringify(response, null, 2));
-
         // Get account_data from template
         const accountData = response?.template?.account_data as AccountDataTemplate;
-        if (!accountData) {
-            console.log('DEBUG: (getAccountDataFields) Could not find account_data in the response.');
-            return [];
-        }
+        if (!accountData) return [];
 
         const returnData: INodePropertyOptions[] = [];
         for (const [key, fieldConfig] of Object.entries(accountData)) {
@@ -161,11 +149,8 @@ export async function getAccountDataFields(this: ILoadOptionsFunctions): Promise
                 });
             }
         }
-
-        console.log('DEBUG: (getAccountDataFields) Returning filtered account data fields:', returnData);
         return returnData;
     } catch (error) {
-        console.log('DEBUG: (getAccountDataFields) Error:', error);
         return [];
     }
 }
@@ -190,11 +175,7 @@ export async function handleGetAllAccountsPostReceive(this: IExecuteSingleFuncti
     const gameslug = this.getNodeParameter('gameslug', 'All') as string;
     const accountStatus = this.getNodeParameter('accountStatus', 'All') as string;
     
-    console.log('Raw response:', JSON.stringify(items, null, 2));
-    
     const accounts = items[0].json.data || [];
-    
-    console.log('Total accounts before filter:', accounts.length);
     
     return accounts
         .filter((account:any) => {
@@ -212,7 +193,6 @@ export async function handleGetAllAccountsPostReceive(this: IExecuteSingleFuncti
 }
 
 export async function processAccountData(fields: any[], gameSlug: string, helpers: any) {
-    // Get the schema for the selected game
     const response = await helpers.httpRequest({
         method: 'GET',
         url: `/accounts/template/${gameSlug}`,

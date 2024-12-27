@@ -25,6 +25,6 @@
 		"credentials/**/*",
 		"nodes/**/*",
 		"nodes/**/*.json",
-		"package.json",
+		"package.json", "create_static_fields.ts",
 	],
 }

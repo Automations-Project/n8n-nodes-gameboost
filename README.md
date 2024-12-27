@@ -1,46 +1,70 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+# n8n-nodes-gameboost
 
-# n8n-nodes-starter
+![Banner image](https://i.imgur.com/ZObxN1p.png)
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](n8n.io). It includes the node linter and other dependencies.
+This is a custom n8n node created by **Nskha** that enables seamless integration with **GameBoost**. It allows sellers to manage their accounts through automated workflows without any programming knowledge.
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+## Table of Contents
+
+## Features
+
+- **No-code Automation**: Seamlessly integrate GameBoost operations into your n8n workflows
+- **Complete Account Management**: 
+  - List all accounts
+  - Create new accounts
+  - Delete existing accounts
+  - Update account details
+- **Secure Authentication**: Built-in credential management for secure API access
+- **Error Handling**: Robust error handling and detailed feedback
+- **Documentation**: Comprehensive documentation and examples included
+
+---
 
 ## Prerequisites
 
-You need the following installed on your development machine:
+- **Node.js**: Version 18+ (Recommended: 20+)
+- **n8n**: Latest stable version
+- **npm**: Latest stable version (included with Node.js)
+- **GameBoost Account**: Active seller account on GameBoost
 
-* [git](https://git-scm.com/downloads)
-* Node.js and pnpm. Minimum version Node 18. You can find instructions on how to install both using nvm (Node Version Manager) for Linux, Mac, and WSL [here](https://github.com/nvm-sh/nvm). For Windows users, refer to Microsoft's guide to [Install NodeJS on Windows](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
-* Install n8n with:
-  ```
-  pnpm install n8n -g
-  ```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+---
 
-## Using this starter
+## Installation
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+To install this custom node as an npm package, run:
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-   ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
-   ```
-3. Run `pnpm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `pnpm lint` to check for errors or `pnpm lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+npm i @nskha/n8n-nodes-gameboost
 
-## More information
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+Once installed, ensure that n8n detects external modules according to [their documentation](https://docs.n8n.io/integrations/creating-nodes/install/).
 
-## License
+---
 
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+## Usage
+
+1. **Add the Node to Your Workflow**  
+   After installing the package, you can add the **Gameboost** node in the n8n Editor UI.
+2. **Configure Credentials**  
+   Configure any necessary credentials required for interacting with GameBoost.  
+   Refer to [n8n credentials documentation](https://docs.n8n.io/integrations/creating-nodes/credentials/) to learn how to add credentials to your node.
+3. **Run Your Workflow**  
+   Trigger or manually start your n8n workflow to perform account operations (list, delete, create) on GameBoost.
+
+---
+
+## Development
+
+If you want to modify or extend this node:
+
+1. Clone this repository:
+git clone https://github.com/Automations-Project/n8n-nodes-gameboost.git
+
+2. Install dependencies:
+npm install
+
+
+3. Navigate to `~/.n8n/custom` directory (create it if it doesn't exist) and initialize a new npm project:
+npm init -y
+
+4. Run the development server:
+npm run start:dev

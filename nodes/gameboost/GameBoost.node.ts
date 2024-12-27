@@ -6,7 +6,7 @@ import {
 } from 'n8n-workflow';
 
 
-import { STATIC_FIELDS } from './create_static_fields';
+import { STATIC_FIELDS } from '../../create_static_fields';
 //@ts-ignore
 import {getGameSlugs,getAccountDataFields,getAllAccountsID,handleGetAllAccountsPreSend,handleGetAllAccountsPostReceive,processAccountData} from '../../methods'
 
@@ -163,8 +163,6 @@ export class GameBoost implements INodeType {
                                             ...requestOptions.body,
                                             account_data: accountData,
                                         };
-
-                                        console.log('Final Request Body:', JSON.stringify(requestOptions.body, null, 2));
                                         return Promise.resolve(requestOptions);
                                     },
                                 ],
