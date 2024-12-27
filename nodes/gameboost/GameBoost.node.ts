@@ -242,7 +242,7 @@ export class GameBoost implements INodeType {
                     },
                 },
                 default: '',
-                description: 'The Game name on the platform, Choose from the list',
+                description: 'The Game name on the platform, Choose from the list. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
             },
             {
                 displayName: 'Account Data Field',
