@@ -1,50 +1,24 @@
 import { 
     INodeType, 
-    INodeTypeDescription,  IHttpRequestOptions,IExecuteSingleFunctions
-
+    INodeTypeDescription,
+    IHttpRequestOptions,
+    IExecuteSingleFunctions,
 } from 'n8n-workflow';
 
 
 import { STATIC_FIELDS } from './create_static_fields';
 //@ts-ignore
-import {getGameSlugs,getAccountDataFields,getAllAccountsID} from '../../methods'
+import {getGameSlugs,getAccountDataFields,getAllAccountsID,handleGetAllAccountsPreSend,handleGetAllAccountsPostReceive,processAccountData} from '../../methods'
 
 // Move constants outside the class
 
-export class gameboost implements INodeType {
-    //@ts-ignore
-    private async processAccountData(fields: any[], gameSlug: string, helpers: any) {
-        // Get the schema for the selected game
-        const response = await helpers.httpRequest({
-            method: 'GET',
-            url: `/accounts/template/${gameSlug}`,
-            baseURL: 'https://api.gameboost.com/v1',
-        });
+export class GameBoost implements INodeType {
 
-        // Extract number fields from schema
-        const schema = response.account_data_schema || {};
-        const numberFields = Object.entries(schema)
-            .filter(([_, value]: [string, any]) => value.type === 'integer' || value.type === 'number')
-            .map(([key]) => key);
-
-        // Process fields with dynamic type conversion
-        const result: { [key: string]: any } = {};
-        for (const f of fields) {
-            if (f.value.includes("{{")) {
-                result[f.field] = f.value;
-            } else if (numberFields.includes(f.field)) {
-                result[f.field] = parseInt(f.value);
-            } else {
-                result[f.field] = f.value;
-            }
-        }
-        return result;
-    }
 
     description: INodeTypeDescription = {
         displayName: 'Game Boost',
         name: 'gameBoost',
-        icon: 'file:gameboost.svg',
+        icon: 'file:gameboostIcon.svg',
         group: ['transform'],
         version: 1,
         subtitle: '={{$parameter["operation"]}}',
@@ -52,12 +26,8 @@ export class gameboost implements INodeType {
         defaults: {
             name: 'Game Boost',
         },
-
-        // Input configuration
         //@ts-ignore
         inputs: ['main'],
-        
-        // Output configuration - note the different type assertion
         //@ts-ignore
         outputs: ['main'],
 
@@ -73,7 +43,7 @@ export class gameboost implements INodeType {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                Authorization: '={{`Bearer ${$credentials.gameboostApi.apiKey}`}}',
+                Authorization: '={{`Bearer ${$credentials.gameboostApi.apiToken}`}}',
             },
         },
         properties: [
@@ -81,25 +51,36 @@ export class gameboost implements INodeType {
                 displayName: 'Operation',
                 name: 'operation',
                 type: 'options',
-                noDataExpression: true,
                 default: 'getAllAccounts',
                 options: [
                     {
                         name: 'Get All Accounts',
                         value: 'getAllAccounts',
                         action: 'Get all accounts',
+                        description:"Retrieve all the account data stored in the system, This includes details about all the accounts currently available",
                         routing: {
                             request: {
                                 method: 'GET',
-                                url: '/accounts',
+                                url: 'https://api.gameboost.com/v1/accounts',
+                                qs: {
+                                    with_data: true,
+                                    page: 1,
+                                    per_page: 10 // Default value
+                                }
                             },
+                            send: {
+                                preSend: [handleGetAllAccountsPreSend]
+                            },
+                            output: {
+                                postReceive: [handleGetAllAccountsPostReceive]
+                            }
                         },
                     },
                     {
                         name: 'Get Account By ID',
                         value: 'getAccountById',
-                        description: 'Get account by its ID',
-                        action: 'Get account by its ID',
+                        description: 'Search for a specific account using its unique ID, This is helpful when you need detailed information about one particular account',
+                        action: 'Get account by ID',
                         routing: {
                             request: {
                                 method: 'GET',
@@ -111,6 +92,7 @@ export class gameboost implements INodeType {
                         name: 'Get Game Schema',
                         value: 'getgameschema',
                         action: 'Get game schema',
+                        description:"Access the schema (JSON file) for a specific game, This schema contains essential details like characters, skins, and other attributes required for that game",
                         routing: {
                             request: {
                                 method: 'GET',
@@ -121,7 +103,7 @@ export class gameboost implements INodeType {
                     {
                         name: 'Create Account',
                         value: 'createaccount',
-                        description: 'Create account to post it on Game Boost',
+                        description: 'Add a new account to the system, You can input all the required details for the account and once completed, publish it on the platform',
                         action: 'Create a new account',
                         routing: {
                             request: {
@@ -192,7 +174,7 @@ export class gameboost implements INodeType {
                     {
                         name: 'Delete Account',
                         value: 'deleteAccount',
-                        description: 'Delete an account by its ID',
+                        description: 'Permanently remove an account using its unique ID. Use this option if the account is no longer needed',
                         action: 'Delete an account',
                         routing: {
                             request: {
@@ -206,7 +188,7 @@ export class gameboost implements INodeType {
                     {
                         name: 'Update Account Status',
                         value: 'updateAccountStatus',
-                        description: 'Update Account Status Draft/listed',
+                        description: 'Change the status of an account such as switching it from "Draft" to "Listed", This is useful for managing the visibility of accounts on the platform',
                         action: 'Update account status',
                         routing: {
                             request: {
@@ -249,12 +231,15 @@ export class gameboost implements INodeType {
                 displayName: 'Game Name or ID',
                 name: 'gameslug',
                 type: 'options',
+                
                 typeOptions: {
+                    
                     loadOptionsMethod: 'getGameSlugs',
+                    defaultOptions: [{name: 'All', value: ''}]
                 },
                 displayOptions: {
                     show: {
-                        operation: ['getgameschema','createaccount'],
+                        operation: ['getgameschema','createaccount','getAllAccounts'],
                     },
                 },
                 default: '',
@@ -300,6 +285,60 @@ export class gameboost implements INodeType {
                     },
                 ],
                 description: 'Select fields from the account_data schema and their values',
+            },
+            {
+                displayName: 'Get All Pages',
+                name: 'getAllPages',
+                type: 'boolean',
+                default: false,
+                description: 'Whether to get all accounts or just the first page',
+                displayOptions: {
+                    show: {
+                        operation: ['getAllAccounts'],
+                    },
+                },
+            },
+            {
+                displayName: 'With All Data',
+                name: 'getAllData',
+                type: 'boolean',
+                default: false,
+                description: 'Whether to include all account data in the response',
+                displayOptions: {
+                    show: {
+                        operation: ['getAllAccounts'],
+                    },
+                },
+
+                
+            },
+  {
+                displayName: 'Status',
+                name: 'accountStatus',
+                type: 'options',
+                default: 'All',
+                options: [
+                    { name: 'All', value: '' },
+                    { name: 'Listed', value: 'Listed' },
+                    { name: 'Draft', value: 'Draft' },
+                    { name: 'Pending', value: 'Pending' },
+                    { name: 'Processing', value: 'Processing' },
+                    { name: 'Sold', value: 'Sold' },
+                    { name: 'Refunded', value: 'Refunded' },
+                    
+                ],
+                
+                description: 'Whether to include all account data in the response',
+                displayOptions: {
+                    show: {
+                        operation: ['getAllAccounts'],
+                    },
+                },
+
+                
+                
+
+                
             },
             ...STATIC_FIELDS.map(field => ({
                 ...field,
