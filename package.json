@@ -1,6 +1,6 @@
 {
 	"name": "@automations-project/n8n-nodes-gameboost",
-	"version": "0.4.0",
+	"version": "0.1.0",
 	"author": {
 		"name": "Nskha"
 	},
@@ -30,10 +30,10 @@
 	"n8n": {
 		"n8nNodesApiVersion": 1,
 		"credentials": [
-			"dist/credentials/gameboostApi.credentials.js"
+			"dist/credentials/GameboostApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/Gameboost/GameBoost.node.js"
+			"dist/nodes/gameboost/GameBoost.node.js"
 		]
 	},
 	"devDependencies": {
