@@ -57,22 +57,6 @@ export const publicFields: INodeProperties[] = [
 export const createAccountFields: INodeProperties[] = [
 	// Not Needed because we get the gameslug from the gameslug parameter
 	{
-		displayName: 'Game',
-		name: 'game',
-		type: 'string',
-		default: '={{$node["Game Boost"].parameter["gameslug"]}}',
-		description: 'The name of the game',
-		placeholder: 'rust',
-		typeOptions: {
-			readOnly: true,
-		},
-		displayOptions: {
-			show: {
-				operation: ['createAccount'],
-			},
-		},
-	},
-	{
 		displayName: 'Title',
 		name: 'title',
 		type: 'string',
@@ -126,7 +110,8 @@ export const createAccountFields: INodeProperties[] = [
 		default: '',
 		description: 'In-game name',
 		placeholder: 'Miracle-A',
-		required: true,
+		// eslint-disable-next-line n8n-nodes-base/node-param-required-false
+		required: false,
 		displayOptions: {
 			show: {
 				operation: ['createAccount'],
@@ -141,7 +126,8 @@ export const createAccountFields: INodeProperties[] = [
 		default: '',
 		description: 'The login username',
 		placeholder: 'Miracle-A-2001',
-		required: true,
+		// eslint-disable-next-line n8n-nodes-base/node-param-required-false
+		required: false,
 		displayOptions: {
 			show: {
 				operation: ['createAccount'],
@@ -157,7 +143,8 @@ export const createAccountFields: INodeProperties[] = [
 		default: '',
 		description: 'The account password',
 		placeholder: 'D93jADms@12okasCAwwqw',
-		required: true,
+		// eslint-disable-next-line n8n-nodes-base/node-param-required-false
+		required: false,
 		displayOptions: {
 			show: {
 				operation: ['createAccount'],
@@ -439,7 +426,8 @@ export const createAccountFields: INodeProperties[] = [
 		default: '',
 		description: 'Any additional dump data',
 		placeholder: 'Fresh Rust Account with Full Access',
-		required: true,
+		// eslint-disable-next-line n8n-nodes-base/node-param-required-false
+		required: false,
 		displayOptions: {
 			show: {
 				operation: ['createAccount'],
@@ -474,6 +462,32 @@ export const createAccountFields: INodeProperties[] = [
 		},
 	},
 	{
+		displayName: 'Manual In-Game-Data (JSON Payload)',
+		name: 'manualPayload',
+		type: 'boolean',
+		default: false,
+		// eslint-disable-next-line n8n-nodes-base/node-param-description-boolean-without-whether
+		description: 'Enter the In-Game-Data manually',
+		displayOptions: {
+			show: {
+				operation: ['createAccount'],
+			},
+		},
+	},
+	{
+		displayName: 'Account In-Game Data',
+		name: 'accountData',
+		type: 'json',
+		default: '',
+		description: 'Enter the account data manually',
+		displayOptions: {
+			show: {
+				operation: ['createAccount'],
+				manualPayload: [true],
+			},
+		},
+	},
+	{
 		displayName: 'Account In-Game Data Field',
 		name: 'accountDataField',
 		type: 'fixedCollection',
@@ -483,6 +497,7 @@ export const createAccountFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['createAccount'],
+				manualPayload: [false],
 			},
 		},
 		default: {},

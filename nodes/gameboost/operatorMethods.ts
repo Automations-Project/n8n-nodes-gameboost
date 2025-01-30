@@ -97,7 +97,9 @@ export async function handleCreateAccount(this: IExecuteFunctions) {
 	const dump = this.getNodeParameter('dump', 0) as string;
 	const deliveryInstructions = this.getNodeParameter('delivery_instructions', 0) as string;
 	const imageUrls = this.getNodeParameter('image_urls', 0) as string;
-	const price = this.getNodeParameter('price', 0) as number;
+	let price = this.getNodeParameter('price', 0) as number;
+	const manualPayload = this.getNodeParameter('manualPayload', 0, false) as boolean;
+	const accountDataManually = this.getNodeParameter('accountData', 0, false) as boolean;
 	const accountDataFields = this.getNodeParameter('accountDataField.fields', 0, []) as Array<{
 		field: string;
 		value: string;
@@ -120,23 +122,29 @@ export async function handleCreateAccount(this: IExecuteFunctions) {
 	}
 
 	// Process account data with expression resolution
-	const accountData: { [key: string]: any } = {};
-	for (const field of accountDataFields) {
-		if (!field.field || !field.value) continue;
-
-		// Keep original value, only try to resolve expressions
-		let resolvedValue = field.value;
-		try {
-			if (typeof field.value === 'string' && field.value.includes('{{')) {
-				resolvedValue = this.evaluateExpression(field.value, 0) as string;
+	let accountData: { [key: string]: any } = {};
+	if (!manualPayload) {
+		const accountData: { [key: string]: any } = {};
+		for (const field of accountDataFields) {
+			if (!field.field || !field.value) continue;
+			// Keep original value, only try to resolve expressions
+			let resolvedValue = field.value;
+			try {
+				if (typeof field.value === 'string' && field.value.includes('{{')) {
+					resolvedValue = this.evaluateExpression(field.value, 0) as string;
+				}
+			} catch (error) {
+				const errorMessage = `Error resolving expression for ${field.field}: ${error}`;
+				throw new NodeApiError(this.getNode(), { message: errorMessage });
 			}
-		} catch (error) {
-			const errorMessage = `Error resolving expression for ${field.field}: ${error}`;
-			throw new NodeApiError(this.getNode(), { message: errorMessage });
-		}
 
-		accountData[field.field] = resolvedValue;
+			accountData[field.field] = resolvedValue;
+		}
 	}
+	// Price handling
+	let fraction = price - Math.floor(price);
+	if (fraction > 0.5) price = Math.floor(price) + 0.99;
+	else price = Math.floor(price) - 0.01;
 
 	const url = `/accounts`;
 	const body = {
@@ -164,7 +172,7 @@ export async function handleCreateAccount(this: IExecuteFunctions) {
 			.split(',')
 			.map((url) => url.trim())
 			.filter((url) => url),
-		account_data: accountData,
+		account_data: !manualPayload ? accountData : accountDataManually,
 		game_items: {},
 	};
 
