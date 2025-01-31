@@ -191,8 +191,8 @@ export async function handleCreateAccount(this: IExecuteFunctions) {
 }
 
 export async function handleGetGameSchema(this: IExecuteFunctions) {
-	const gameslug = this.getNodeParameter('gameslug', 0) as string;
-	const url = `/games/${gameslug}/schema`;
+	const gameslug = this.getNodeParameter('gameNameSchema', 0) as string;
+	const url = `/accounts/template/${gameslug}`;
 	const response = await genericHttpRequest.call(this, 'GET', url);
 	return response;
 }

@@ -19,6 +19,12 @@ export const gameboostOperations: INodeProperties[] = [
 				action: 'Get a specific account by ID',
 			},
 			{
+				name: 'Get Game Schema',
+				value: 'getGameSchema',
+				description: 'Get the schema of a game',
+				action: 'Get the schema of a game',
+			},
+			{
 				name: 'Create Account',
 				value: 'createAccount',
 				description: 'Create a new account on GameBoost',

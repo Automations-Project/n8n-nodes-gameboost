@@ -1,5 +1,5 @@
 import { IExecuteFunctions } from 'n8n-workflow';
-import { handleGetAccountById, handleGetAllAccounts, handleDeleteAccount, handleCreateAccount, handleBulkUpdateAccountStatus } from './operatorMethods';
+import { handleGetAccountById, handleGetAllAccounts, handleDeleteAccount, handleCreateAccount, handleBulkUpdateAccountStatus, handleGetGameSchema } from './operatorMethods';
 
 export async function executeGameboost(this: IExecuteFunctions, operation: string) {
 	switch (operation) {
@@ -7,6 +7,8 @@ export async function executeGameboost(this: IExecuteFunctions, operation: strin
 			return await handleGetAllAccounts.call(this);
 		case 'getAccountById':
 			return await handleGetAccountById.call(this);
+		case 'getGameSchema':
+			return await handleGetGameSchema.call(this);
 		case 'deleteAccount':
 			return await handleDeleteAccount.call(this);
 		case 'createAccount':

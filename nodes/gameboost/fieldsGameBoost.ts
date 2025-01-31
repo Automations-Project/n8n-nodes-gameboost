@@ -45,8 +45,25 @@ export const publicFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['bulkUpdateAccountStatus', 'getgameschema', 'createAccount', 'getAllAccounts'],
+				operation: ['bulkUpdateAccountStatus', 'createAccount', 'getAllAccounts'],
 				AllGames: [false],
+			},
+		},
+		default: '',
+		description: 'The Game name on the platform, Choose from the list. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+	},
+
+	{
+		displayName: 'Game Name or ID',
+		name: 'gameNameSchema',
+		type: 'options',
+		required: true,
+		typeOptions: {
+			loadOptionsMethod: 'getGameSlugs',
+		},
+		displayOptions: {
+			show: {
+				operation: ['getGameSchema'],
 			},
 		},
 		default: '',
@@ -96,6 +113,7 @@ export const createAccountFields: INodeProperties[] = [
 			minValue: 1,
 			maxValue: 9999,
 			numberStepSize: 2,
+			numberPrecision: 2,
 		},
 		displayOptions: {
 			show: {
