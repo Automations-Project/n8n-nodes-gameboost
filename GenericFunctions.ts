@@ -67,7 +67,7 @@ export async function genericHttpRequest<T = GameBoostResponse>(this: IExecuteFu
 		});
 		return response as T;
 	} catch (error: any) {
-		console.error('Request failed:', JSON.stringify(error.response?.data, null, 2));
+		// console.error('Request failed:', JSON.stringify(error.response?.data, null, 2));
 
 		if (error.response?.status >= 400) {
 			// Handle all client (4xx) and server (5xx) errors
@@ -85,7 +85,7 @@ export async function genericHttpRequest<T = GameBoostResponse>(this: IExecuteFu
 				errorMessage += 'An unexpected error occurred';
 			}
 
-			throw new NodeApiError(this.getNode(), { message: errorMessage });
+			return { status: error.response.status, error: errorMessage } as T;
 		}
 
 		// Fallback for other types of errors

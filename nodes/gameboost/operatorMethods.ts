@@ -224,10 +224,10 @@ export async function handleBulkUpdateAccountStatus(this: IExecuteFunctions) {
 
 	const filteredAccounts = allAccountsID.data!.filter((account) => account.attributes.status === from && account.attributes.game_slug === targetGame).map((account) => account.id);
 
-	console.log('Request body:', {
-		accounts: [...filteredAccounts],
-		status: to,
-	});
+	// console.log('Request body:', {
+	// 	accounts: [...filteredAccounts],
+	// 	status: to,
+	// });
 
 	if (filteredAccounts.length === 0) {
 		throw new NodeApiError(this.getNode(), { message: `No accounts found with status "${from}" for game "${targetGame}"` });
