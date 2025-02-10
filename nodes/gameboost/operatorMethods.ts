@@ -329,3 +329,10 @@ function getConditionDescription(config: FieldConfig): string {
 			return `Condition: ${config.condition}`;
 	}
 }
+
+export async function HandleUpdateAccountStatus(this: IExecuteFunctions) {
+	const targetAccount = this.getNodeParameter('targetAccount', 0) as string;
+	const status = this.getNodeParameter('status', 0) as string;
+	const response = await genericHttpRequest.call(this, 'PATCH', `/accounts/${targetAccount}/status`, { body: { status: status.charAt(0).toLowerCase() + status.slice(1) } });
+	return response;
+}

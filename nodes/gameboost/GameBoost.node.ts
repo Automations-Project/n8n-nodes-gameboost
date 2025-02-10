@@ -1,5 +1,5 @@
 import { IDataObject, IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription, NodeConnectionType } from 'n8n-workflow';
-import { bulkUpdateAccountStatusFields, createAccountFields, getAllAccountsFields, publicFields } from './fieldsGameBoost';
+import { bulkUpdateAccountStatusFields, createAccountFields, getAllAccountsFields, publicFields, updateAccountStatusFields } from './fieldsGameBoost';
 import { getGameSlugs, getAccountDataFields, getAllAccountsID } from './operatorMethods';
 import { gameboostOperations } from './operatorsGameBoost';
 import { executeGameboost } from './executeGameboost';
@@ -47,6 +47,7 @@ export class GameBoost implements INodeType {
 			...publicFields,
 			...createAccountFields,
 			...getAllAccountsFields,
+			...updateAccountStatusFields,
 		],
 	};
 

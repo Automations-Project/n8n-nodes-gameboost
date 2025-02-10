@@ -1,5 +1,5 @@
 import { IExecuteFunctions } from 'n8n-workflow';
-import { handleGetAccountById, handleGetAllAccounts, handleDeleteAccount, handleCreateAccount, handleBulkUpdateAccountStatus, handleGetGameSchema } from './operatorMethods';
+import { handleGetAccountById, handleGetAllAccounts, handleDeleteAccount, handleCreateAccount, handleBulkUpdateAccountStatus, handleGetGameSchema, HandleUpdateAccountStatus } from './operatorMethods';
 
 export async function executeGameboost(this: IExecuteFunctions, operation: string) {
 	switch (operation) {
@@ -15,6 +15,8 @@ export async function executeGameboost(this: IExecuteFunctions, operation: strin
 			return await handleCreateAccount.call(this);
 		case 'bulkUpdateAccountStatus':
 			return await handleBulkUpdateAccountStatus.call(this);
+		case 'updateAccountStatus':
+			return await HandleUpdateAccountStatus.call(this);
 		default:
 			throw new Error(`Unsupported operation: ${operation}`);
 	}

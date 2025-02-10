@@ -42,6 +42,12 @@ export const gameboostOperations: INodeProperties[] = [
 				description: 'Update the status of multiple accounts',
 				action: 'Update the status of multiple accounts',
 			},
+			{
+				name: 'Update Account Status',
+				value: 'updateAccountStatus',
+				description: 'Update the status of an account',
+				action: 'Update the status of an account',
+			},
 		],
 		default: 'getAllAccounts',
 		noDataExpression: true,

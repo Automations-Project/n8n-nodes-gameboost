@@ -16,24 +16,6 @@ export const publicFields: INodeProperties[] = [
 		default: '',
 		description: 'The ID of the account. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
-	{
-		displayName: 'Status',
-		name: 'status',
-		type: 'options',
-		default: 'draft',
-		description: 'The status of the account',
-		placeholder: 'Draft',
-		options: [
-			{ name: 'Draft', value: 'draft' },
-			{ name: 'Listed', value: 'listed' },
-		],
-		displayOptions: {
-			show: {
-				operation: ['updateAccountStatus'],
-			},
-		},
-		required: true,
-	},
 
 	{
 		displayName: 'Game Name or ID',
@@ -651,10 +633,6 @@ export const bulkUpdateAccountStatusFields: INodeProperties[] = [
 		options: [
 			{ name: 'Draft', value: 'Draft' },
 			{ name: 'Listed', value: 'Listed' },
-			{ name: 'Pending', value: 'Pending' },
-			{ name: 'Processing', value: 'Processing' },
-			{ name: 'Refunded', value: 'Refunded' },
-			{ name: 'Sold', value: 'Sold' },
 		],
 		displayOptions: {
 			show: {
@@ -671,15 +649,45 @@ export const bulkUpdateAccountStatusFields: INodeProperties[] = [
 		options: [
 			{ name: 'Draft', value: 'Draft' },
 			{ name: 'Listed', value: 'Listed' },
-			{ name: 'Pending', value: 'Pending' },
-			{ name: 'Processing', value: 'Processing' },
-			{ name: 'Refunded', value: 'Refunded' },
-			{ name: 'Sold', value: 'Sold' },
 		],
 		displayOptions: {
 			show: {
 				operation: ['bulkUpdateAccountStatus'],
 			},
 		},
+	},
+];
+
+export const updateAccountStatusFields: INodeProperties[] = [
+	{
+		displayName: 'Target Account',
+		name: 'targetAccount',
+		type: 'string',
+		description: 'The Account ID to update',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['updateAccountStatus'],
+			},
+		},
+	},
+	{
+		displayName: 'Status',
+		name: 'status',
+		type: 'options',
+		default: 'draft',
+		description: 'The status of the account',
+		placeholder: 'draft',
+		options: [
+			{ name: 'Draft', value: 'draft' },
+			{ name: 'Listed', value: 'listed' },
+		],
+		displayOptions: {
+			show: {
+				operation: ['updateAccountStatus'],
+			},
+		},
+		required: true,
 	},
 ];
