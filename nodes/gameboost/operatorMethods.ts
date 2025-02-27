@@ -88,7 +88,7 @@ export async function handleCreateAccount(this: IExecuteFunctions) {
 	// Get all required fields from node parameters
 	const title = this.getNodeParameter('title', 0) as string;
 	const slug = this.getNodeParameter('slug', 0) as string;
-	const gameslug = this.getNodeParameter('gameslug', 0) as string;
+	const gameslug = this.getNodeParameter('gameNameSchema', 0) as string;
 	const isManual = this.getNodeParameter('is_manual', 0) as boolean;
 	const deliveryTime = this.getNodeParameter('delivery_time', 0) as number;
 	const server = this.getNodeParameter('server', 0) as string;
@@ -292,29 +292,42 @@ export async function getGameSlugs(this: ILoadOptionsFunctions): Promise<INodePr
 	}
 }
 export async function getAccountDataFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-	const gameslug = this.getNodeParameter('gameslug') as string;
+	// Check what operation is being used to determine the correct parameter name
+	const operation = this.getNodeParameter('operation') as string;
+	let gameslug = '';
 
-	if (!gameslug) return [];
+	try {
+		if (operation === 'createAccount') {
+			gameslug = this.getNodeParameter('gameNameSchema') as string;
+		} else {
+			gameslug = this.getNodeParameter('gameslug') as string;
+		}
 
-	const response = (await genericHttpRequest.call(this, 'GET', `/accounts/template/${gameslug}`)) as GameBoostResponse;
+		if (!gameslug) return [];
 
-	const accountData = response?.template?.account_data as Record<string, FieldConfig>;
+		const response = (await genericHttpRequest.call(this, 'GET', `/accounts/template/${gameslug}`)) as GameBoostResponse;
 
-	if (!accountData) return [];
+		const accountData = response?.template?.account_data as Record<string, FieldConfig>;
 
-	return Object.entries(accountData).flatMap(([key, config]) => {
-		if (!config.condition) return [];
+		if (!accountData) return [];
 
-		const description = getConditionDescription(config);
+		return Object.entries(accountData).flatMap(([key, config]) => {
+			if (!config.condition) return [];
 
-		return [
-			{
-				name: key,
-				value: key,
-				description,
-			},
-		];
-	});
+			const description = getConditionDescription(config);
+
+			return [
+				{
+					name: key,
+					value: key,
+					description,
+				},
+			];
+		});
+	} catch (error) {
+		console.error('Error fetching account data fields:', error);
+		return [];
+	}
 }
 
 function getConditionDescription(config: FieldConfig): string {

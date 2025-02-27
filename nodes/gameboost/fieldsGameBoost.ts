@@ -27,7 +27,7 @@ export const publicFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['bulkUpdateAccountStatus', 'createAccount', 'getAllAccounts'],
+				operation: ['bulkUpdateAccountStatus', 'getAllAccounts'],
 				AllGames: [false],
 			},
 		},
@@ -45,7 +45,7 @@ export const publicFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['getGameSchema'],
+				operation: ['getGameSchema', 'createAccount'],
 			},
 		},
 		default: '',
