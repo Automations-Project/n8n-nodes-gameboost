@@ -1,7 +1,7 @@
 import { ILoadOptionsFunctions, INodePropertyOptions, NodeApiError } from 'n8n-workflow';
 
 import { IExecuteFunctions } from 'n8n-workflow';
-import { genericHttpRequest, GameBoostResponse, FieldConfig, sleep } from '../../GenericFunctions';
+import { genericHttpRequest, GameBoostResponse, FieldConfig, sleep } from './GenericFunctions';
 
 //Handle Execute Functions
 export async function handleGetAllAccounts(this: IExecuteFunctions) {
@@ -199,9 +199,18 @@ export async function handleGetGameSchema(this: IExecuteFunctions) {
 
 export async function handleGetAccountById(this: IExecuteFunctions) {
 	const accountId = this.getNodeParameter('accountId', 0) as string;
-	const url = `/accounts/${accountId}`;
-	const response = await genericHttpRequest.call(this, 'GET', url);
-	return response;
+
+	// Check if accountId is a number
+	if (!isNaN(Number(accountId))) {
+		const url = `/accounts/${accountId}`;
+		const response = await genericHttpRequest.call(this, 'GET', url);
+		console.log(`accountId NUMBER: ${accountId}`);
+		return response;
+	} else {
+		const response = await genericHttpRequest.call(this, 'GET', `/accounts/by-login/${accountId}`);
+		console.log(`accountId STRING: ${accountId}`);
+		return response;
+	}
 }
 
 export async function handleDeleteAccount(this: IExecuteFunctions) {

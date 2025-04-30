@@ -7,3 +7,6 @@ npm-debug.log*
 yarn.lock
 .vscode/launch.json
 .npmrc
+.vscode
+.windsurf
+package-lock.json

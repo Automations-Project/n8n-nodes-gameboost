@@ -1,8 +1,9 @@
+/* eslint-disable n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options */
 import { INodeProperties } from 'n8n-workflow';
 
 export const publicFields: INodeProperties[] = [
 	{
-		displayName: 'Account Name or ID',
+		displayName: 'Account Login or ID',
 		name: 'accountId',
 		type: 'options',
 		typeOptions: {

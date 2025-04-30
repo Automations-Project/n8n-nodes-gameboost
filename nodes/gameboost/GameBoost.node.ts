@@ -8,6 +8,7 @@ export class GameBoost implements INodeType {
 	public async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const operation = this.getNodeParameter('operation', 0) as string;
 		const responseData = await executeGameboost.call(this, operation);
+
 		// console.log('Debug - Response Data:', responseData);
 		if (Array.isArray(responseData) && responseData.length > 0 && responseData[0].hasOwnProperty('json')) {
 			return [responseData as INodeExecutionData[]];

@@ -3,6 +3,7 @@ import { IAuthenticateGeneric, ICredentialType, INodeProperties, ICredentialTest
 export class GameBoostApi implements ICredentialType {
 	name = 'gameboostApi';
 	displayName = 'Game Boost API';
+	icon = 'file:gameboostIcon.svg' as const;
 	// eslint-disable-next-line n8n-nodes-base/cred-class-field-documentation-url-miscased
 	documentationUrl = 'https://docs.gameboost.com/api-reference';
 
