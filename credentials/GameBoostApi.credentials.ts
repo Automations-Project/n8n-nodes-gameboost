@@ -1,11 +1,18 @@
-import { IAuthenticateGeneric, ICredentialType, INodeProperties, ICredentialTestRequest } from 'n8n-workflow';
+import type {
+	IAuthenticateGeneric,
+	ICredentialTestRequest,
+	ICredentialType,
+	INodeProperties,
+} from 'n8n-workflow';
 
 export class GameBoostApi implements ICredentialType {
 	name = 'gameboostApi';
-	displayName = 'Game Boost API';
+
+	displayName = 'GameBoost API';
+
 	icon = 'file:gameboostIcon.svg' as const;
-	// eslint-disable-next-line n8n-nodes-base/cred-class-field-documentation-url-miscased
-	documentationUrl = 'https://docs.gameboost.com/api-reference';
+
+	documentationUrl = 'https://docs.gameboost.com/v2/api-reference';
 
 	properties: INodeProperties[] = [
 		{
@@ -17,6 +24,7 @@ export class GameBoostApi implements ICredentialType {
 				password: true,
 			},
 			default: '',
+			description: 'Your GameBoost API token. Get it from your <a href="https://gameboost.com/settings/api" target="_blank">API Settings</a>.',
 		},
 	];
 
@@ -25,6 +33,8 @@ export class GameBoostApi implements ICredentialType {
 		properties: {
 			headers: {
 				Authorization: '=Bearer {{$credentials.apiToken}}',
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
 			},
 		},
 	};
@@ -32,7 +42,7 @@ export class GameBoostApi implements ICredentialType {
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: 'https://api.gameboost.com',
-			url: '/v1/accounts',
+			url: '/v2/games',
 			method: 'GET',
 		},
 	};
