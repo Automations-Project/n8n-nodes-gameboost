@@ -77,7 +77,6 @@ export const accountOfferGetManyFields: INodeProperties[] = [
 		default: 50,
 		typeOptions: {
 			minValue: 1,
-			maxValue: 50,
 		},
 		displayOptions: {
 			show: {
@@ -86,7 +85,7 @@ export const accountOfferGetManyFields: INodeProperties[] = [
 				returnAll: [false],
 			},
 		},
-		description: 'Max number of results to return (max 50)',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Filters',
@@ -238,14 +237,15 @@ export const accountOfferCreateFields: INodeProperties[] = [
 				operation: ['create'],
 			},
 		},
-		description: 'Whether the account requires manual delivery by seller',
+		description: 'Whether the account requires manual delivery by seller. If true, you must specify delivery time. If false, you must provide account credentials.',
 	},
 	// Delivery time fields (required for manual delivery)
 	{
 		displayName: 'Delivery Time',
 		name: 'deliveryTime',
 		type: 'fixedCollection',
-		default: { values: { duration: 10, unit: 'minutes' } },
+		default: {},
+		placeholder: 'Add Delivery Time',
 		displayOptions: {
 			show: {
 				resource: ['accountOffer'],

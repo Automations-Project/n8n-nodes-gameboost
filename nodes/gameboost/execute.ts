@@ -68,15 +68,20 @@ export async function execute(
 
 					let accountData: IDataObject = {};
 					if (accountDataMode === 'json') {
-						const jsonData = this.getNodeParameter('accountDataJson', i, '{}') as string;
-						try {
-							accountData = JSON.parse(jsonData);
-						} catch {
-							throw new NodeOperationError(
-								this.getNode(),
-								'Invalid JSON in Account Data field',
-								{ itemIndex: i },
-							);
+						const jsonData = this.getNodeParameter('accountDataJson', i, '{}');
+						// Handle both string (manual input) and object (expression result)
+						if (typeof jsonData === 'string') {
+							try {
+								accountData = JSON.parse(jsonData);
+							} catch {
+								throw new NodeOperationError(
+									this.getNode(),
+									'Invalid JSON in Account Data field',
+									{ itemIndex: i },
+								);
+							}
+						} else if (typeof jsonData === 'object' && jsonData !== null) {
+							accountData = jsonData as IDataObject;
 						}
 					} else {
 						const fields = this.getNodeParameter('accountDataFields.field', i, []) as Array<{

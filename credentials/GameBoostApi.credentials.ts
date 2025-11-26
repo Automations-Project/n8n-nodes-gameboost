@@ -12,6 +12,7 @@ export class GameBoostApi implements ICredentialType {
 
 	icon = 'file:gameboostIcon.svg' as const;
 
+	// eslint-disable-next-line n8n-nodes-base/cred-class-field-documentation-url-miscased
 	documentationUrl = 'https://docs.gameboost.com/v2/api-reference';
 
 	properties: INodeProperties[] = [
